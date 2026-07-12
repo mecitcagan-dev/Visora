@@ -151,7 +151,7 @@ export function StudioApp() {
       toast.success(`${payload.images.length} görsel hazır`);
     } catch {
       toast.error(
-        "Backend'e bağlanılamadı. API çalışıyor mu? (localhost:8000)"
+        `Backend'e bağlanılamadı (${apiBase()}). CORS / API ayarını kontrol edin.`
       );
     } finally {
       window.clearTimeout(coldTimer);

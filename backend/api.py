@@ -31,8 +31,11 @@ app = FastAPI(title="Visora API", version="1.0.0")
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
-_cors_raw = os.environ.get("CORS_ORIGINS", "http://localhost:3000")
-_cors_origins = [o.strip() for o in _cors_raw.split(",") if o.strip()]
+_cors_raw = os.environ.get(
+    "CORS_ORIGINS",
+    "http://localhost:3000,http://127.0.0.1:3000",
+)
+_cors_origins = [o.strip().rstrip("/") for o in _cors_raw.split(",") if o.strip()]
 app.add_middleware(
     CORSMiddleware,
     allow_origins=_cors_origins,
