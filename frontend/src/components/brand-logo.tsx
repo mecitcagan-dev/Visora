@@ -10,6 +10,8 @@ type BrandLogoProps = {
   /** header | hero | icon */
   variant?: "header" | "hero" | "icon";
   priority?: boolean;
+  /** Empty string when a nearby heading already names the brand (a11y). */
+  alt?: string;
 };
 
 const SIZES = {
@@ -26,6 +28,7 @@ export function BrandLogo({
   className,
   variant = "header",
   priority = false,
+  alt = "Visora",
 }: BrandLogoProps) {
   const { resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
@@ -38,7 +41,7 @@ export function BrandLogo({
     return (
       <Image
         src="/brand/visora-iko.png"
-        alt="Visora"
+        alt={alt}
         width={size.width}
         height={size.height}
         priority={priority}
@@ -56,7 +59,7 @@ export function BrandLogo({
   return (
     <Image
       src={src}
-      alt="Visora"
+      alt={alt}
       width={size.width}
       height={size.height}
       priority={priority}

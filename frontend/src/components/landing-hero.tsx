@@ -139,8 +139,10 @@ export function LandingHero({ className }: { className?: string }) {
         </div>
 
         <div className="mx-auto max-w-2xl text-center">
-          <div className="flex justify-center">
-            <BrandLogo variant="hero" priority />
+          <div className="flex flex-col items-center">
+            {/* Decorative wordmark; brand name exposed via single page h1 */}
+            <BrandLogo variant="hero" priority alt="" />
+            <h1 className="sr-only">Visora</h1>
           </div>
           <p className="mt-5 text-lg leading-relaxed text-muted-foreground md:mt-6 md:text-xl">
             Basit bir cümleden, stil ve ışıkla zenginleştirilmiş blog kapak
