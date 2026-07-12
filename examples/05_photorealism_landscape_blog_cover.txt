@@ -1,0 +1,5 @@
+user_description: A diverse team of remote workers standing around a glowing shared calendar, each holding a lightbulb symbolizing focus.
+style: photorealism
+ratio: landscape
+enriched_prompt:
+Photorealistic shot of a diverse remote team—two women, three men of varied ethnicities—meeting in a modern, airy office with large south‑west windows. The team gathers around a translucent glowing shared digital calendar projected on a clean white wooden table, each member holding a polished brass lightbulb that softly illuminates their focused faces. Composition adheres to the rule of thirds, placing the calendar slightly off‑center with the team members offset to the right and left, and a shallow depth of field that keeps the bulbs and faces in crisp detail while the rest of the office blur softly. Natural window light bathes the scene, creating realistic shadows and a subtle rim light that accentuates the lightbulbs’ glow. The image features sharp detail and natural textures (skin, glass, metal, wood) with balanced contrast, natural color grading in warm neutral tones, and an editorial feel.

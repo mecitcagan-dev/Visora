@@ -1,0 +1,7 @@
+﻿httpx
+Pillow
+fastapi
+uvicorn[standard]
+slowapi
+python-dotenv
+pytest

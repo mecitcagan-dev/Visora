@@ -1,0 +1,33 @@
+# Runtime outputs
+output/images/*
+!output/images/.gitkeep
+output/prompts/*
+!output/prompts/.gitkeep
+backend/output/images/*
+!backend/output/images/.gitkeep
+backend/output/prompts/*
+!backend/output/prompts/.gitkeep
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+backend/.env
+*.egg-info/
+.pytest_cache/
+
+# Node / Next
+node_modules/
+frontend/.next/
+frontend/.env.local
+frontend/out/
+
+# Misc
+.DS_Store
+.streamlit/
+
+# Debug / local
+debug-*.log
+.cursor/

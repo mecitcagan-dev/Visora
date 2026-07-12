@@ -1,0 +1,3 @@
+# Moved to backend/requirements.txt
+httpx
+Pillow

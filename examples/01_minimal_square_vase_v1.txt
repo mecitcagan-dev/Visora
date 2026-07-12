@@ -1,0 +1,5 @@
+user_description: ceramic vase with wildflowers on a windowsill
+style: minimal
+ratio: square
+enriched_prompt:
+Minimal flat illustration of a ceramic vase filled with wildflowers on a windowsill, centered subject with generous negative space, simple background, soft even ambient lighting with gentle shadows, clean vector shapes and sparse detail, muted color palette with two accent colors: muted terracotta for the vase and muted sage for the flowers, soft sky‑blue background., wide establishing shot, calm balanced mood

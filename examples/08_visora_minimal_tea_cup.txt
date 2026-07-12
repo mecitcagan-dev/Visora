@@ -1,0 +1,5 @@
+user_description: visora rename smoke tea cup
+style: minimal
+ratio: square
+enriched_prompt:
+Minimal flat illustration, centered white tea cup with clean black outline, a single smooth smoke swirl rising from the rim in deep auburn, soft even ambient light and gentle subtle shadows, generous negative space with a muted light gray background, limited palette of black, white and auburn, sparse detail, crisp vector shapes, coherent subject, no deformation, high quality, coherent anatomy, clean edges, no watermark text artifacts

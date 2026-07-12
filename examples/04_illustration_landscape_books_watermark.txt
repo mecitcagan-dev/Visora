@@ -1,0 +1,5 @@
+user_description: stack of books beside a reading lamp
+style: illustration
+ratio: landscape
+enriched_prompt:
+Digital illustration of a stack of books beside a classic reading lamp on a wooden desk, rendered with painted textures for a blog-friendly look; warm directional key light with soft fill highlights the books and lamp, creating a clear focal point, while balanced negative space is left on one side for a headline overlay, all in a harmonious mid‑saturation palette of earthy browns, soft creams, and warm amber accents for a cohesive tone.

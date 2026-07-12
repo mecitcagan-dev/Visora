@@ -1,0 +1,5 @@
+user_description: A virtual whiteboard with three highlighted outcomes, surrounded by pens and a coffee mug.
+style: photorealism
+ratio: landscape
+enriched_prompt:
+Photorealistic image of a modern office interior: a sleek virtual whiteboard projected on a clean wall, showing three bold, highlighted outcome boxes in vivid color, rendered with sharp, meticulous detail and natural digital textures. Surround the board with a set of brightly colored pens and a steaming coffee mug, placed off‑center to follow the rule of thirds. Capture the scene from an eye‑level angle, using natural window light that filters in through a nearby window, creating realistic shadows and a subtle rim light around the whiteboard, pens, and mug. Apply a shallow depth of field to blur the background slightly, keeping the whiteboard, pens, and mug in crisp focus. Use a natural color grading with balanced contrast to emphasize realistic hues and textures.
