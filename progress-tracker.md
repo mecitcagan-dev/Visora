@@ -58,3 +58,14 @@ change.
 
 - Yerel: `dev.bat` veya uvicorn :8000 + `npm run dev` :3000
 - Hot reload için frontend’i yeniden başlatmak gerekebilir (EADDRINUSE görüldüyse eski process hâlâ ayakta)
+
+### CWV — Önce (baseline)
+
+Lab: `next build` + `next start` (port 3055), Lighthouse mobile/`--preset=perf`, 2026-07-12.
+
+| Sayfa | Performance | LCP | CLS | INP |
+|-------|-------------|-----|-----|-----|
+| `/` | 99 | 1.8 s | 0 | n/a (lab etkileşimsiz) |
+| `/uretim` | 95 | 1.8 s | 0 | n/a (lab etkileşimsiz) |
+
+Notlar: `/uretim` TBT 220 ms; `/` TBT 0 ms. INP lab’de ölçülmedi (interaction yok).
