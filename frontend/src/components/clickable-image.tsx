@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { Download } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { downloadImage, type GeneratedImage } from "@/lib/visora";
@@ -30,11 +31,15 @@ export function ClickableImage({
       title="İndirmek için tıkla"
       aria-label={`${alt ?? image.label} — indirmek için tıkla`}
     >
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
+      <Image
         src={`data:image/png;base64,${image.data}`}
         alt={alt ?? image.label}
-        className={cn("w-full object-cover", imgClassName)}
+        width={1024}
+        height={1024}
+        unoptimized
+        sizes="(max-width: 768px) 100vw, 560px"
+        className={cn("h-auto w-full object-cover", imgClassName)}
+        style={{ height: "auto" }}
         draggable={false}
       />
       <span className="pointer-events-none absolute inset-x-0 bottom-0 flex items-center justify-center gap-1.5 bg-gradient-to-t from-black/55 to-transparent px-3 py-3 text-xs font-medium text-white opacity-0 transition-opacity group-hover:opacity-100">

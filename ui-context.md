@@ -89,7 +89,7 @@ Ana sayfa (`/`) **yalnızca tam ekran hero**dır (nav + hero = ~100dvh; scroll e
 - **Form kartı**: Açıklama; stil/oran kartları; Collapsible gelişmiş (varyasyon, watermark varsayılan ipucu "Visora", blog metni); Groq BYOK alanı yanında tarayıcı-saklama uyarısı
 - **Sonuç kartı**: Büyük önizleme (tıkla-indir); Badge enrichment; prompt özeti
 - **Cold start**: Skeleton + "Sunucu uyanıyor…"
-- **Motion**: Polaroid hover scale/shadow; sergi JS `rotateY`; `prefers-reduced-motion` ile yavaşlat / scale kapat
+- **Motion**: Polaroid hover scale/shadow; sergi JS `rotateY`; `prefers-reduced-motion` ile sergi auto-spin **durur** (yavaşlatılmaz) / hover scale kapat
 - **Yasal**: `/gizlilik` (aydınlatma), `/kullanim-kosullari` (koşullar) — Fraunces H1/H2 + DM Sans gövde; max-w-3xl; header + footer shell
 
 ## Sergi (`/sergi`) — 3D
@@ -101,7 +101,7 @@ Ana sayfa (`/`) **yalnızca tam ekran hero**dır (nav + hero = ~100dvh; scroll e
 - `n < 6`: merkezlenmiş fan (lab’de tune); `n ≥ 6`: tam silindir (klasik chord radius)
 - `n === 1`: transform yok, ortada düz gösterim (tan bölme hatası önlenir)
 - Kart tıklaması indirme yapmaz; indirme yalnızca Galeri'de
-- Maskeli kenar fade; reduced-motion → otomatik dönüş yavaşlar; sürükleme her zaman mümkün (`n > 1`)
+- Maskeli kenar fade; reduced-motion → otomatik dönüş **durur**; sürükleme / ok tuşları her zaman mümkün (`n > 1`)
 - Boş oturum: empty state + ana sayfaya link
 
 ## Galeri (`/galeri`) — grid + indir

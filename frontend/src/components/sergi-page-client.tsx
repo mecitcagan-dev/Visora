@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { Layers } from "lucide-react";
 import { carouselGeometry } from "@/lib/carousel-geometry";
@@ -17,7 +18,6 @@ const DRAG_SENSITIVITY = 0.45;
 const KEYBOARD_STEP_DEG = 18;
 /** Degrees per second — matches former 32s / 1turn spin */
 const AUTO_SPEED_DEG = 360 / 32;
-const REDUCED_SPEED_DEG = 360 / 128;
 
 function usePrefersReducedMotion() {
   const [reduced, setReduced] = useState(false);
@@ -45,10 +45,12 @@ export function SergiPageClient() {
   const rotationRef = useRef(0);
   const autoSpinRef = useRef(true);
   const draggingRef = useRef(false);
+  const reducedMotionRef = useRef(reducedMotion);
   const lastXRef = useRef(0);
   const resumeTimerRef = useRef<number | null>(null);
 
   nRef.current = n;
+  reducedMotionRef.current = reducedMotion;
 
   const clearResumeTimer = useCallback(() => {
     if (resumeTimerRef.current != null) {
@@ -58,25 +60,25 @@ export function SergiPageClient() {
   }, []);
 
   useEffect(() => {
-    if (n <= 1) {
+    if (n <= 1 || reducedMotion) {
       autoSpinRef.current = false;
+      clearResumeTimer();
       return;
     }
     autoSpinRef.current = !draggingRef.current;
-  }, [n]);
+  }, [n, reducedMotion, clearResumeTimer]);
 
   useEffect(() => {
-    if (n <= 1) return;
+    if (n <= 1 || reducedMotion) return;
 
     let raf = 0;
     let last = performance.now();
-    const speed = reducedMotion ? REDUCED_SPEED_DEG : AUTO_SPEED_DEG;
 
     const tick = (now: number) => {
       const dt = (now - last) / 1000;
       last = now;
       if (autoSpinRef.current && !draggingRef.current) {
-        rotationRef.current += speed * dt;
+        rotationRef.current += AUTO_SPEED_DEG * dt;
         setRotation(rotationRef.current);
       }
       raf = requestAnimationFrame(tick);
@@ -89,6 +91,7 @@ export function SergiPageClient() {
   const pauseAutoAndResume = useCallback(() => {
     autoSpinRef.current = false;
     clearResumeTimer();
+    if (reducedMotionRef.current || nRef.current <= 1) return;
     resumeTimerRef.current = window.setTimeout(() => {
       autoSpinRef.current = true;
       resumeTimerRef.current = null;
@@ -239,11 +242,14 @@ export function SergiPageClient() {
               }}
             >
               {gallery.map((item, i) => (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
+                <Image
                   key={item.id}
                   src={`data:image/png;base64,${item.data}`}
                   alt={item.label}
+                  width={280}
+                  height={400}
+                  unoptimized
+                  sizes="17.5em"
                   className="card"
                   style={{ ["--i" as string]: i }}
                   draggable={false}

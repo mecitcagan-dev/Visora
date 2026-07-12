@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { Check, Copy, Download, LayoutGrid, X } from "lucide-react";
 import { toast } from "sonner";
@@ -95,11 +96,13 @@ export function GaleriPageClient() {
                   )}
                   aria-label={`${item.label} — önizle`}
                 >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
+                  <Image
                     src={`data:image/png;base64,${item.data}`}
                     alt={item.label}
-                    className="h-full w-full object-cover"
+                    fill
+                    unoptimized
+                    sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, 25vw"
+                    className="object-cover"
                     draggable={false}
                   />
                 </button>
@@ -142,11 +145,15 @@ export function GaleriPageClient() {
               </Button>
             </div>
 
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
+            <Image
               src={`data:image/png;base64,${selected.data}`}
               alt={selected.label}
-              className="max-h-[min(48vh,28rem)] w-full shrink-0 rounded-xl object-contain bg-muted"
+              width={1024}
+              height={1024}
+              unoptimized
+              sizes="(max-width: 768px) 100vw, 48rem"
+              className="max-h-[min(48vh,28rem)] w-full shrink-0 rounded-xl bg-muted object-contain"
+              style={{ height: "auto" }}
               draggable={false}
             />
 

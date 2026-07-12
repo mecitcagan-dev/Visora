@@ -96,3 +96,8 @@ Lab: `next build` + `next start` (port 3055), Lighthouse mobile/`--preset=perf`,
 | `/uretim` | 95 | 1.8 s | 0 | n/a (lab etkileşimsiz) |
 
 Notlar: `/uretim` TBT 220 ms; `/` TBT 0 ms. INP lab’de ölçülmedi (interaction yok).
+
+### CWV — ADIM B + reduced-motion (kullanıcı-görünür davranış)
+
+- Base64 oturum görselleri: `next/image` + `unoptimized` (sonuç / galeri / sergi).
+- **Sergi `prefers-reduced-motion`:** önceki davranış = auto-spin **yavaşlatma** (`REDUCED_SPEED_DEG`); yeni = auto-spin **tamamen durur** (RAF yok); drag + ok tuşları açık. Gerekçe: WCAG 2.3.3 Animation from Interactions + sürekli `rotateY` CLS riskini kaldırmak.
