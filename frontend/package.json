@@ -7,7 +7,8 @@
     "build": "next build --turbopack",
     "start": "next start",
     "lint": "eslint",
-    "a11y:scan": "node scripts/a11y-scan.mjs"
+    "a11y:scan": "node scripts/a11y-scan.mjs",
+    "analyze": "node scripts/analyze.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.6.0",
@@ -25,6 +26,7 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@next/bundle-analyzer": "^16.2.10",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",

@@ -102,3 +102,4 @@ Frontend (`frontend/next.config.ts` `headers()` + `poweredByHeader: false`):
 - Bilinen zayıflık: çoklu insan figürlü foto-gerçekçi sahnelerde artefakt. Azaltma:
   - `prompt_engine`: anti-deformasyon, daha az kişi, net odak, kalite olumlu/negatif ipuçları
   - `image_generator`: `enhance=true`, `nologo=true`, tutarlı `model=flux`, yeterli çözünürlük
+- Frontend CWV: oturum base64 görselleri `next/image` + `unoptimized`; bundle inceleme `frontend` içinde `npm run analyze` (`@next/bundle-analyzer`, `ANALYZE=true`)

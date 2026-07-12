@@ -97,7 +97,9 @@ Lab: `next build` + `next start` (port 3055), Lighthouse mobile/`--preset=perf`,
 
 Notlar: `/uretim` TBT 220 ms; `/` TBT 0 ms. INP lab’de ölçülmedi (interaction yok).
 
-### CWV — ADIM B + reduced-motion (kullanıcı-görünür davranış)
+### CWV — Bundle analyze
 
-- Base64 oturum görselleri: `next/image` + `unoptimized` (sonuç / galeri / sergi).
-- **Sergi `prefers-reduced-motion`:** önceki davranış = auto-spin **yavaşlatma** (`REDUCED_SPEED_DEG`); yeni = auto-spin **tamamen durur** (RAF yok); drag + ok tuşları açık. Gerekçe: WCAG 2.3.3 Animation from Interactions + sürekli `rotateY` CLS riskini kaldırmak.
+- Tooling: `@next/bundle-analyzer` (dev) + `npm run analyze` (`ANALYZE=true`, webpack build; turbopack değil).
+- Route First Load (webpack): `/` 131 kB · `/sergi` 131 kB · `/uretim` 152 kB · shared ~102 kB.
+- **Sergi izolasyonu:** `SergiPageClient` / `aria-roledescription` yalnızca `.next/static/chunks/app/sergi/page-*.js`; `gallery-3d` CSS (`preserve-3d` / `.scene`) yalnızca `sergi.html` / `sergi.rsc` referanslı — home/uretim chunk’ına sızmamış.
+- Anormal third-party yok (Three.js / framer-motion yok). En büyük pay: framework `react-dom` (~515 kB stat / ~168 kB parsed) — beklenen; kaldırma/upgrade önerisi yok.
