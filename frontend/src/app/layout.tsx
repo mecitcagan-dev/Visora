@@ -4,6 +4,7 @@ import { DM_Sans, Fraunces, IBM_Plex_Mono } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
 import { ThemeProvider } from "@/components/theme-provider";
 import { GalleryProvider } from "@/components/gallery-provider";
+import { absoluteUrl, getSiteUrl } from "@/lib/site";
 import "./globals.css";
 
 const GA_MEASUREMENT_ID = "G-MZ5NVP1MYS";
@@ -24,10 +25,20 @@ const ibmPlexMono = IBM_Plex_Mono({
   subsets: ["latin"],
 });
 
+const siteUrl = getSiteUrl();
+
+const defaultTitle = "AI Blog Görselleri";
+const defaultDescription =
+  "Basit bir açıklamadan stil, ışık ve kompozisyonla zenginleştirilmiş blog görselleri üretin. Ücretsiz, tarayıcıda indirin.";
+
 export const metadata: Metadata = {
-  title: "Visora — AI Blog Görselleri",
-  description:
-    "Basit bir açıklamadan stil, ışık ve kompozisyonla zenginleştirilmiş blog görselleri üretin.",
+  metadataBase: new URL(siteUrl),
+  title: {
+    // Root page shares this segment — template does not apply here; default includes brand
+    default: "AI Blog Görselleri | Visora",
+    template: "%s | Visora",
+  },
+  description: defaultDescription,
   applicationName: "Visora",
   appleWebApp: {
     title: "Visora",
@@ -40,6 +51,32 @@ export const metadata: Metadata = {
     ],
     shortcut: "/favicon.ico",
     apple: [{ url: "/apple-touch-icon.png", sizes: "180x180" }],
+  },
+  alternates: {
+    canonical: absoluteUrl("/"),
+  },
+  openGraph: {
+    type: "website",
+    locale: "tr_TR",
+    url: absoluteUrl("/"),
+    siteName: "Visora",
+    title: `${defaultTitle} | Visora`,
+    description: defaultDescription,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `${defaultTitle} | Visora`,
+    description: defaultDescription,
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+  verification: {
+    google: process.env.NEXT_PUBLIC_GSC_VERIFICATION || undefined,
+    other: process.env.NEXT_PUBLIC_BING_VERIFICATION
+      ? { "msvalidate.01": process.env.NEXT_PUBLIC_BING_VERIFICATION }
+      : undefined,
   },
 };
 
