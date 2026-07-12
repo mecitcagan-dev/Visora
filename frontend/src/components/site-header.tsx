@@ -58,7 +58,7 @@ export function SiteHeader({
       <div className="relative mx-auto flex max-w-6xl items-center gap-3 px-4 py-3 md:px-8 md:py-4">
         <Link
           href="/"
-          className="shrink-0 cursor-pointer transition-opacity duration-200 hover:opacity-80"
+          className="shrink-0 cursor-pointer rounded-md transition-opacity duration-200 hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           aria-label="Visora ana sayfa"
           onClick={onHomeClick}
         >

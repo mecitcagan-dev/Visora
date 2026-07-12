@@ -164,8 +164,8 @@ export function StudioApp() {
     <div className="min-h-screen">
       <SiteHeader generating={loading} />
 
-      <div className="mx-auto max-w-6xl px-4 pb-16 pt-8 md:px-8">
-        <header className="mb-8">
+      <main className="mx-auto max-w-6xl px-4 pb-16 pt-8 md:px-8">
+        <div className="mb-8">
           <h1 className="font-display text-3xl font-semibold tracking-tight md:text-4xl">
             Üretim
           </h1>
@@ -173,7 +173,7 @@ export function StudioApp() {
             Açıklamanı yaz, stil ve oranı seç; Visora senin için zenginleştirip
             üretsin.
           </p>
-        </header>
+        </div>
 
         <ol className="mb-8 grid gap-3 sm:grid-cols-3">
           {STEPS.map((step, index) => (
@@ -182,7 +182,7 @@ export function StudioApp() {
               className="rounded-2xl border border-border bg-card p-4 shadow-[0_8px_28px_rgba(18,22,28,0.07)] sm:p-5"
             >
               <div className="mb-2 flex items-center gap-2 text-primary">
-                <step.icon className="h-5 w-5" />
+                <step.icon className="h-5 w-5" aria-hidden />
                 <span className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
                   Adım {index + 1}
                 </span>
@@ -195,7 +195,7 @@ export function StudioApp() {
           ))}
         </ol>
 
-        <main className="grid gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]">
+        <div className="grid gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]">
           <Card className="rounded-2xl border shadow-[0_8px_28px_rgba(18,22,28,0.07)]">
             <CardHeader>
               <CardTitle className="text-lg">Üretim</CardTitle>
@@ -217,15 +217,22 @@ export function StudioApp() {
               </div>
 
               <div className="space-y-2">
-                <Label>Stil</Label>
-                <div className="grid gap-2 sm:grid-cols-3">
+                <Label id="style-label">Stil</Label>
+                <div
+                  className="grid gap-2 sm:grid-cols-3"
+                  role="radiogroup"
+                  aria-labelledby="style-label"
+                >
                   {STYLES.map((s) => (
                     <button
                       key={s.id}
                       type="button"
+                      role="radio"
+                      aria-checked={style === s.id}
                       onClick={() => setStyle(s.id)}
                       className={cn(
                         "cursor-pointer rounded-[14px] border p-3 text-left transition-all duration-200",
+                        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
                         style === s.id
                           ? "border-primary bg-accent text-accent-foreground"
                           : "border-border bg-card hover:bg-muted/60"
@@ -241,15 +248,22 @@ export function StudioApp() {
               </div>
 
               <div className="space-y-2">
-                <Label>Oran</Label>
-                <div className="grid gap-2 sm:grid-cols-2">
+                <Label id="ratio-label">Oran</Label>
+                <div
+                  className="grid gap-2 sm:grid-cols-2"
+                  role="radiogroup"
+                  aria-labelledby="ratio-label"
+                >
                   {RATIOS.map((r) => (
                     <button
                       key={r.id}
                       type="button"
+                      role="radio"
+                      aria-checked={ratio === r.id}
                       onClick={() => setRatio(r.id)}
                       className={cn(
                         "cursor-pointer rounded-[14px] border p-3 text-left transition-all duration-200",
+                        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
                         ratio === r.id
                           ? "border-primary bg-accent text-accent-foreground"
                           : "border-border bg-card hover:bg-muted/60"
@@ -327,7 +341,7 @@ export function StudioApp() {
                         href="https://console.groq.com/keys"
                         target="_blank"
                         rel="noreferrer"
-                        className="text-primary underline-offset-2 hover:underline"
+                        className="text-primary underline underline-offset-2"
                       >
                         Groq
                       </a>{" "}
@@ -492,8 +506,8 @@ export function StudioApp() {
               </Link>
             </div>
           </div>
-        </main>
-      </div>
+        </div>
+      </main>
     </div>
   );
 }

@@ -12,6 +12,8 @@ import "./gallery-3d.css";
 
 const RESUME_DELAY_MS = 1800;
 const DRAG_SENSITIVITY = 0.45;
+/** Arrow-key rotation step (degrees) — one notch toward next card feel */
+const KEYBOARD_STEP_DEG = 18;
 /** Degrees per second — matches former 32s / 1turn spin */
 const AUTO_SPEED_DEG = 360 / 32;
 const REDUCED_SPEED_DEG = 360 / 128;
@@ -83,6 +85,25 @@ export function SergiPageClient() {
     return () => cancelAnimationFrame(raf);
   }, [n, reducedMotion]);
 
+  const pauseAutoAndResume = useCallback(() => {
+    autoSpinRef.current = false;
+    clearResumeTimer();
+    resumeTimerRef.current = window.setTimeout(() => {
+      autoSpinRef.current = true;
+      resumeTimerRef.current = null;
+    }, RESUME_DELAY_MS);
+  }, [clearResumeTimer]);
+
+  const rotateBy = useCallback(
+    (deltaDeg: number) => {
+      if (nRef.current <= 1) return;
+      pauseAutoAndResume();
+      rotationRef.current += deltaDeg;
+      setRotation(rotationRef.current);
+    },
+    [pauseAutoAndResume]
+  );
+
   useEffect(() => {
     const scene = sceneRef.current;
     if (!scene || n <= 1) return;
@@ -118,26 +139,40 @@ export function SergiPageClient() {
       } catch {
         /* already released */
       }
-      clearResumeTimer();
-      resumeTimerRef.current = window.setTimeout(() => {
-        autoSpinRef.current = true;
-        resumeTimerRef.current = null;
-      }, RESUME_DELAY_MS);
+      pauseAutoAndResume();
+    };
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (nRef.current <= 1) return;
+      if (event.key === "ArrowLeft") {
+        event.preventDefault();
+        rotateBy(KEYBOARD_STEP_DEG);
+      } else if (event.key === "ArrowRight") {
+        event.preventDefault();
+        rotateBy(-KEYBOARD_STEP_DEG);
+      } else if (event.key === "Home") {
+        event.preventDefault();
+        pauseAutoAndResume();
+        rotationRef.current = 0;
+        setRotation(0);
+      }
     };
 
     scene.addEventListener("pointerdown", onPointerDown);
     scene.addEventListener("pointermove", onPointerMove);
     scene.addEventListener("pointerup", endDrag);
     scene.addEventListener("pointercancel", endDrag);
+    scene.addEventListener("keydown", onKeyDown);
 
     return () => {
       scene.removeEventListener("pointerdown", onPointerDown);
       scene.removeEventListener("pointermove", onPointerMove);
       scene.removeEventListener("pointerup", endDrag);
       scene.removeEventListener("pointercancel", endDrag);
+      scene.removeEventListener("keydown", onKeyDown);
       clearResumeTimer();
     };
-  }, [n, clearResumeTimer]);
+  }, [n, clearResumeTimer, pauseAutoAndResume, rotateBy]);
 
   return (
     <div className="min-h-screen">
@@ -148,8 +183,9 @@ export function SergiPageClient() {
           Sergi
         </h1>
         <p className="mt-2 max-w-xl text-muted-foreground">
-          Bu oturumda ürettiğiniz görsellerin 3D sergisi. Sürükleyerek
-          döndürebilirsiniz. İndirme için Galeriye gidin.
+          Bu oturumda ürettiğiniz görsellerin 3D sergisi. Sürükleyerek veya
+          odaklandıktan sonra ok tuşlarıyla döndürebilirsiniz. İndirme için
+          Galeriye gidin.
         </p>
 
         {n === 0 ? (
@@ -177,11 +213,17 @@ export function SergiPageClient() {
         ) : (
           <div
             ref={sceneRef}
-            className="scene mt-12 h-[28rem] w-full md:h-[34rem]"
+            className="scene mt-12 h-[28rem] w-full md:h-[34rem] rounded-xl outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
             data-dragging={dragging ? "true" : "false"}
             data-static={n === 1 ? "true" : "false"}
-            role="img"
-            aria-label="Oturum görsellerinin 3D sergisi — sürükleyerek döndürün"
+            role="region"
+            tabIndex={n > 1 ? 0 : undefined}
+            aria-roledescription="3D sergi"
+            aria-label={
+              n > 1
+                ? "Oturum görsellerinin 3D sergisi. Sürükleyerek veya sol/sağ ok tuşlarıyla döndürün. Home başlangıca döner."
+                : "Oturum görselinin 3D sergisi"
+            }
           >
             <div
               className="a3d"
