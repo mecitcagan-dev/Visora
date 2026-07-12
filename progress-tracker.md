@@ -38,11 +38,17 @@ change.
 
 ## In Progress
 
-- None yet.
+- Security hardening (ADIM 3 audit tamam; ADIM 4 docs sırada)
 
 ## Next Up
 
 - Vercel + Render ücretsiz deploy (kullanıcı)
+- Security: ADIM 4 docs + prod CSP `connect-src` doğrulama
+
+### Security — ADIM 3 bağımlılık taraması (upgrade YOK)
+
+- **npm audit** (`frontend/`): High/Critical **0**. Moderate **2**: `postcss` XSS (GHSA-qx2v-qp2m-jg93) via `next` nested dependency; `npm audit fix --force` next@9 öneriyor (kırıcı — uygulanmadı).
+- **pip-audit** (`backend/requirements.txt`): **No known vulnerabilities found**.
 
 ## Open Questions
 
