@@ -17,7 +17,7 @@
 | CLI storage        | Yerel `output/`                                    | Yalnızca CLI; web akışını etkilemez                           |
 | Secrets            | BYOK: kullanıcı Groq key (localStorage → `X-Groq-Api-Key`); opsiyonel backend env CLI için | Render'a zorunlu `GROQ_API_KEY` yok |
 | CORS               | FastAPI CORSMiddleware                             | Vercel / localhost origin                                     |
-| Rate limiting      | slowapi (veya eşdeğeri), IP bazlı                  | Ücretsiz kota koruması (sonraki implementasyon)               |
+| Rate limiting      | slowapi + SlowAPIMiddleware, IP bazlı              | 8 istek/dakika (kota koruması)                                |
 | Deploy             | Frontend → Vercel Hobby; Backend → Render free     | Fiili deploy sonra; cold start trade-off kabul                |
 | Dev DX             | `dev.sh` / `dev.bat` (iki process)                 | Yalnızca geliştirici; son kullanıcı launcher yok              |
 
@@ -54,15 +54,26 @@
 - **Frontend galeri**: Oturum store (React Context; isteğe `sessionStorage` — `localStorage` yok). `/` ↔ `/gallery` navigasyonunda korunur; sekme kapanınca / bilinçli temizlikte gider. Kalıcı sunucu galeri yok.
 - **CLI**: Yerel `backend/output/images/` + `prompts/` — web'den bağımsız.
 - **Secrets / BYOK**: Üretim sayfasında isteğe bağlı Groq API key; tarayıcı `localStorage`'da saklanır, istekte `X-Groq-Api-Key` ile backend'e iletilir (loglanmaz). Render'da paylaşılan `GROQ_API_KEY` zorunlu değil. CLI için opsiyonel env key kalır.
+- **Çerez / analitik tercihi**: Kabul veya red kararı tarayıcı `localStorage`'da tutulur (sunucu kalıcı storage değildir; BYOK ile aynı sınıf).
 - **Geçici bellek**: Üretim sırasında bytes backend belleğinde; istek bitince tutulmaz.
 
 ## Auth and Access Model
 
 - Kullanıcı auth yok; API herkese açık (public URL)
-- CORS: yalnızca bilinen frontend origin'ler (Vercel prod + localhost)
-- IP bazlı rate limit (ör. slowapi) — ücretsiz Pollinations/Groq kotasını korur
-- Groq key yalnızca sunucuda; tarayıcıda görünmez / gönderilmez
+- CORS: yalnızca bilinen frontend origin'ler (Vercel prod + localhost); wildcard `*` yok
+- IP bazlı rate limit (slowapi, 8/min) — ücretsiz Pollinations/Groq kotasını korur
+- Groq **BYOK**: isteğe bağlı kullanıcı anahtarı tarayıcı `localStorage`'da tutulur; üretim isteğinde `X-Groq-Api-Key` (veya body fallback) ile backend'e iletilir; sunucu key saklamaz / loglamaz
+- **Bilinen trade-off (XSS → key çalınması):** `localStorage`'daki Groq key, başarılı bir XSS ile okunabilir. Mimari bilinçli olarak BYOK seçti; sunucu tarafında paylaşılan zorunlu `GROQ_API_KEY` yok. Azaltma: CSP + `dangerouslySetInnerHTML` kaçınma + düz metin render; nonce/`strict-dynamic` ileride değerlendirilebilir
 - Pollinations anonim
+
+## Security Headers
+
+Frontend (`frontend/next.config.ts` `headers()` + `poweredByHeader: false`):
+
+- `Content-Security-Policy` (enforce): `default-src 'self'`; `script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com`; `style-src 'self' 'unsafe-inline'`; `img-src 'self' data: blob:` + Wikimedia (`commons` / `upload`) + `image.pollinations.ai` + GA; `font-src 'self'`; `connect-src 'self'` + build-time `NEXT_PUBLIC_API_URL` origin (+ local `:8000`) + GA/GTM; `object-src 'none'`; `base-uri 'self'`; `frame-ancestors 'none'`
+- Diğer: `X-Content-Type-Options: nosniff`; `Referrer-Policy: strict-origin-when-cross-origin`; `Permissions-Policy: camera=(), microphone=(), geolocation=()`; `X-Frame-Options: DENY`; `Strict-Transport-Security: max-age=63072000; includeSubDomains`
+- **CSP `script-src 'unsafe-inline'` trade-off:** Next.js hydration + mevcut GA inline gtag için zorunlu tutuldu. Bu, klasik XSS’e karşı CSP gücünü zayıflatır. Nonce / `strict-dynamic` bu turda uygulanmadı (middleware + GA yeniden yazımı gerekir); gelecek sertleştirme adayı
+- Backend: `X-Groq-Api-Key` / `groq_api_key` hata `detail` metinlerinde redact edilir; client’a stack/path sızdırılmaz; Pydantic `max_length` (description 2000, blog_text 50000, watermark 120)
 
 ## Deploy Notes
 

@@ -38,12 +38,30 @@ change.
 
 ## In Progress
 
-- Security hardening (ADIM 3 audit tamam; ADIM 4 docs sırada)
+- None yet.
 
 ## Next Up
 
-- Vercel + Render ücretsiz deploy (kullanıcı)
-- Security: ADIM 4 docs + prod CSP `connect-src` doğrulama
+- Vercel env: `NEXT_PUBLIC_SITE_URL` production origin (SEO canonical/OG; ayrı iş)
+
+### Security hardening (ADIM 1–4) — tamam
+
+- **ADIM 1** (`cc649f1`): `frontend/next.config.ts` — CSP enforce + nosniff / Referrer-Policy / Permissions-Policy / X-Frame-Options DENY / HSTS / `poweredByHeader: false`. Report-Only → 0 ihlal → enforce.
+- **ADIM 2** (`a72b3f4`): `backend/api.py` only — CORS whitelist (`*` yok), `SlowAPIMiddleware` + 8/min → 429, `max_length` (description 2000 / blog_text 50000 / watermark 120) → 400, `X-Groq-Api-Key` redact, generic 500 (stack yok), debug route yok (`/health` + `/api/generate`). `pytest` 11 passed. Generate smoke 200.
+- **ADIM 3** (`206df77`): npm audit — High/Critical 0, moderate 2 (`postcss` via `next`, upgrade yok); pip-audit — temiz.
+- **ADIM 4**: XSS tarama + `architecture.md` Security Headers / BYOK XSS + `'unsafe-inline'` trade-off notları; bu progress özeti.
+
+### Security — ek kontroller
+
+1. **`script-src 'unsafe-inline'` trade-off** — architecture.md’ye yazıldı (Next hydration + GA; nonce/strict-dynamic bu turda yok).
+2. **Prod CSP `connect-src`** — `curl -I https://visora-studio.vercel.app/`: Render origin `https://visora-s9iq.onrender.com` CSP içinde **görünüyor** (doğrulandı).
+3. **pytest** — max_length sonrası yeşil (11 passed).
+4. **Rate limit vs ana akış** — generate smoke rate limit testinden **önce** çalıştırıldı; 429 testi `/health` ile yapıldı (eşik sonrası generate tekrarlanmadı).
+
+### Security — ADIM 4 XSS tarama
+
+- `dangerouslySetInnerHTML`: yalnızca [`frontend/src/components/json-ld.tsx`](frontend/src/components/json-ld.tsx) — sabit SEO JSON-LD; `serializeJsonLd` ile `<` → `\u003c` escape (kullanıcı/API serbest metin değil).
+- Prompt / blog çıktıları: `studio-app` + `galeri-page-client` içinde `font-mono` `<pre>` / `<Textarea>` — React text children, HTML parse yok.
 
 ### Security — ADIM 3 bağımlılık taraması (upgrade YOK)
 
