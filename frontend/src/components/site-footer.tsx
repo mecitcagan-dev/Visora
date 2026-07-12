@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { openCookiePreferences } from "@/lib/analytics-consent";
 import { cn } from "@/lib/utils";
 
 const LEGAL_LINKS = [
@@ -39,11 +42,18 @@ export function SiteFooter({
             <Link
               key={link.href}
               href={link.href}
-              className="cursor-pointer text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-md"
+              className="cursor-pointer rounded-md text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             >
               {link.label}
             </Link>
           ))}
+          <button
+            type="button"
+            onClick={() => openCookiePreferences()}
+            className="cursor-pointer rounded-md text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          >
+            Çerez Tercihleri
+          </button>
         </nav>
       </div>
     </footer>

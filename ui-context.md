@@ -66,6 +66,7 @@ shadcn/ui (Radix + Tailwind). CLI ile ekle; `components/ui/` altında tut.
 | Rozet                | `Badge` `soft` (enrichment + v1/v2/v3 — accent-soft/primary) |
 | Tema                 | `next-themes`                                          |
 | İkonlar              | `lucide-react`                                         |
+| Çerez / GA rıza      | `CookieConsentBanner` + `AnalyticsProvider` (bağımsız; localStorage tercih) |
 
 ## Landing / Hero
 
@@ -81,7 +82,8 @@ Ana sayfa (`/`) **yalnızca tam ekran hero**dır (nav + hero = ~100dvh; scroll e
 ## Layout Patterns
 
 - **Shell**: Sticky üst nav — logo | Ana Sayfa / Üretim / Sergi / Galeri | "Üretmeye başla" CTA + tema toggle; mobilde hamburger; aktif route `usePathname` ile vurgulanır
-- **Footer**: Sayfa altı sade bar — © Visora | Gizlilik (`/gizlilik`) · Kullanım Koşulları (`/kullanim-kosullari`); token’larla muted metin, `border-t`; ana sayfada `compact` (hero 100dvh bozulmasın)
+- **Footer**: Sayfa altı sade bar — © Visora | Gizlilik (`/gizlilik`) · Kullanım Koşulları (`/kullanim-kosullari`) · Çerez Tercihleri (banner’ı yeniden açar); token’larla muted metin, `border-t`; ana sayfada `compact` (hero 100dvh bozulmasın)
+- **Cookie banner**: İlk ziyarette alt bar — Kabul Et / Reddet; GA yalnızca kabul sonrası yüklenir; tercih localStorage
 - **Home (`/`)**: Tam ekran hero (polaroid + marka + tek CTA) + kompakt footer; scroll edilecek ekstra pazarlama içeriği yok
 - **Üretim (`/uretim`)**: 3 adımlı intro şeridi (Açıkla / Zenginleştir / İndir) → Generator (iki kolon: form | sonuç) + Sergi/Galeri erişim kartları
 - **Form kartı**: Açıklama; stil/oran kartları; Collapsible gelişmiş (varyasyon, watermark varsayılan ipucu "Visora", blog metni); Groq BYOK alanı yanında tarayıcı-saklama uyarısı

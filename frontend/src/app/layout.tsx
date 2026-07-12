@@ -1,13 +1,11 @@
 import type { Metadata } from "next";
-import Script from "next/script";
 import { DM_Sans, Fraunces, IBM_Plex_Mono } from "next/font/google";
+import { AnalyticsProvider } from "@/components/analytics-provider";
 import { Toaster } from "@/components/ui/sonner";
 import { ThemeProvider } from "@/components/theme-provider";
 import { GalleryProvider } from "@/components/gallery-provider";
 import { absoluteUrl, getSiteUrl } from "@/lib/site";
 import "./globals.css";
-
-const GA_MEASUREMENT_ID = "G-MZ5NVP1MYS";
 
 const dmSans = DM_Sans({
   variable: "--font-dm-sans",
@@ -90,23 +88,13 @@ export default function RootLayout({
       <body
         className={`${dmSans.variable} ${fraunces.variable} ${ibmPlexMono.variable} min-h-screen antialiased`}
       >
-        <Script
-          src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
-          strategy="afterInteractive"
-        />
-        <Script id="google-analytics" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', '${GA_MEASUREMENT_ID}');
-          `}
-        </Script>
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
-          <GalleryProvider>
-            {children}
-            <Toaster richColors position="top-center" />
-          </GalleryProvider>
+          <AnalyticsProvider>
+            <GalleryProvider>
+              {children}
+              <Toaster richColors position="top-center" />
+            </GalleryProvider>
+          </AnalyticsProvider>
         </ThemeProvider>
       </body>
     </html>

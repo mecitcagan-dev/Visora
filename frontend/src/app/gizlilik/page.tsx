@@ -68,8 +68,9 @@ export default function GizlilikPage() {
         <p>
           Ayrıca, ücretsiz kota koruması için istekler{" "}
           <strong>IP adresi üzerinden</strong> hız sınırına (rate limit) tabi
-          tutulabilir. Bunun dışında tanımlı bir kullanıcı takip veya analitik
-          sistemi bu metinde taahhüt edilmez.
+          tutulabilir. Kullanım analitiği için Google Analytics yalnızca sizin
+          çerez onayınızdan sonra çalışır (aşağıdaki “Çerezler ve Analitik”
+          bölümüne bakın).
         </p>
       </LegalSection>
 
@@ -82,6 +83,10 @@ export default function GizlilikPage() {
             / şablon yolu)
           </li>
           <li>Hizmetin kötüye kullanımını sınırlamak (IP bazlı rate limit)</li>
+          <li>
+            Onay verirseniz site kullanımını anlamak (Google Analytics —
+            sayfa görüntüleme ve genel istatistik)
+          </li>
         </ul>
         <p>Reklam profilleme veya hesap oluşturma amacıyla veri toplanmaz.</p>
       </LegalSection>
@@ -106,6 +111,45 @@ export default function GizlilikPage() {
         </p>
       </LegalSection>
 
+      <LegalSection title="Çerezler ve Analitik">
+        <p>
+          Visora, site kullanımını anlamak için{" "}
+          <strong>Google Analytics</strong> kullanabilir. Bu araç sayfa
+          görüntüleme ve genel kullanım istatistikleri toplar. Google, IP
+          adresi, cihaz ve tarayıcı bilgisi gibi teknik verileri de
+          işleyebilir; “kişisel veri toplanmaz” demiyoruz.
+        </p>
+        <p>
+          <strong>Amaç:</strong> hangi sayfaların ziyaret edildiğini ve genel
+          kullanım eğilimlerini görmek. Reklam hedefleme için kullanmıyoruz.
+        </p>
+        <p>
+          <strong>Saklama:</strong> Analitik verilerin ne kadar süre
+          tutulacağı Google’ın kendi politikasına tabidir. Visora, Google
+          Analytics varsayılan saklama ayarını bu metinde ayrı bir süre olarak
+          özelleştirmiş sayılmaz.
+        </p>
+        <p>
+          <strong>Rızanız:</strong> Analytics yalnızca çerez banner’ında{" "}
+          <strong>Kabul Et</strong> seçerseniz yüklenir.{" "}
+          <strong>Reddet</strong> derseniz Google Analytics script’i
+          yüklenmez. Tercihiniz tarayıcınızda saklanır; değiştirmek için
+          sayfa altındaki <strong>Çerez Tercihleri</strong> linkini kullanın.
+        </p>
+        <p>
+          Google’ın gizlilik politikası:{" "}
+          <a
+            href="https://policies.google.com/privacy"
+            target="_blank"
+            rel="noreferrer"
+            className="text-primary underline-offset-2 hover:underline"
+          >
+            policies.google.com/privacy
+          </a>
+          .
+        </p>
+      </LegalSection>
+
       <LegalSection title="Saklama süresi">
         <ul>
           <li>
@@ -126,6 +170,10 @@ export default function GizlilikPage() {
             saklamaz.
           </li>
           <li>
+            <strong>Çerez / analitik tercihi</strong> tarayıcı localStorage’da
+            tutulur (sunucu depolaması değildir).
+          </li>
+          <li>
             IP rate limit kayıtları, koruma amacıyla kısa süreli ve teknik
             niteliktedir; kullanıcı hesabı veya kalıcı profil oluşturmaz.
           </li>
@@ -135,9 +183,10 @@ export default function GizlilikPage() {
       <LegalSection title="Haklarınız">
         <p>
           Hesap olmadığı için “profil silme” gibi üyelik işlemleri yoktur.
-          Tarayıcı verilerinizi (oturum galerisi, kayıtlı Groq anahtarı)
-          kendiniz temizleyebilirsiniz: sekme kapatma / site verilerini silme
-          veya Üretim sayfasındaki anahtar “Sil” kontrolü.
+          Tarayıcı verilerinizi (oturum galerisi, kayıtlı Groq anahtarı, çerez
+          tercihi) kendiniz temizleyebilirsiniz: sekme kapatma / site
+          verilerini silme, Üretim sayfasındaki anahtar “Sil” kontrolü veya
+          footer’daki <strong>Çerez Tercihleri</strong>.
         </p>
         <p>
           KVKK kapsamındaki aydınlatma, erişim ve silme talepleriniz için site
