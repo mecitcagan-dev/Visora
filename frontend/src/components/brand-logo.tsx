@@ -15,13 +15,25 @@ type BrandLogoProps = {
 };
 
 const SIZES = {
-  header: { width: 160, height: 28, className: "h-7 w-auto md:h-8" },
+  header: {
+    width: 160,
+    height: 28,
+    className: "h-7 w-auto md:h-8",
+    /** Displayed ~112–128px; avoid default 100vw srcset. */
+    sizes: "160px",
+  },
   hero: {
     width: 520,
     height: 92,
     className: "h-16 w-auto sm:h-[4.5rem] md:h-20",
+    sizes: "(max-width: 640px) 256px, (max-width: 768px) 288px, 320px",
   },
-  icon: { width: 64, height: 50, className: "h-10 w-auto" },
+  icon: {
+    width: 64,
+    height: 50,
+    className: "h-10 w-auto",
+    sizes: "40px",
+  },
 } as const;
 
 export function BrandLogo({
@@ -44,6 +56,7 @@ export function BrandLogo({
         alt={alt}
         width={size.width}
         height={size.height}
+        sizes={size.sizes}
         priority={priority}
         className={cn(size.className, "object-contain", className)}
       />
@@ -62,6 +75,7 @@ export function BrandLogo({
       alt={alt}
       width={size.width}
       height={size.height}
+      sizes={size.sizes}
       priority={priority}
       className={cn(size.className, "object-contain object-left", className)}
     />
