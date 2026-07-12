@@ -71,23 +71,28 @@ shadcn/ui (Radix + Tailwind). CLI ile ekle; `components/ui/` altında tut.
 
 Ana sayfa (`/`) **yalnızca tam ekran hero**dır (nav + hero = ~100dvh; scroll edilecek ekstra içerik yok).
 
-- **Polaroid yay**: 5 kamu malı ünlü tablo (Wikimedia Commons), eğik kartlar (-8°…+8°), surface çerçeve + gölge + caption; dekoratif (tıklanınca indirme yok)
-- **Marka**: Visora logosu (hero boyutu) ortada
+- **Polaroid yay**: 5 kamu malı ünlü tablo (Wikimedia Commons), eğik kartlar (-8°…+8°), surface çerçeve + gölge + caption; dekoratif (tıklanınca indirme yok); anlamlı `alt`
+- **Marka**: Visora logosu (hero boyutu) ortada; SEO için tek `<h1 class="sr-only">Visora</h1>` (logo dekoratif `alt=""`)
 - **Değer önerisi**: tek cümle (stil/ışık/kompozisyonla zenginleştirilmiş blog görselleri)
 - **CTA**: yalnızca **"Üretmeye başla"** → `/uretim` (Sergi/Galeri linkleri nav'da)
 - Form, sonuç ve "nasıl çalışır" adımları Ana Sayfa'da yoktur
+- SEO: `/` indexlenebilir; OG görseli marka tabanlı (`opengraph-image.tsx`), Wikimedia OG'de kullanılmaz
 
 ## Layout Patterns
 
 - **Shell**: Sticky üst nav — logo | Ana Sayfa / Üretim / Sergi / Galeri | "Üretmeye başla" CTA + tema toggle; mobilde hamburger; aktif route `usePathname` ile vurgulanır
-- **Home (`/`)**: Tam ekran hero (polaroid + marka + tek CTA); alt içerik yok
+- **Footer**: Sayfa altı sade bar — © Visora | Gizlilik (`/gizlilik`) · Kullanım Koşulları (`/kullanim-kosullari`); token’larla muted metin, `border-t`; ana sayfada `compact` (hero 100dvh bozulmasın)
+- **Home (`/`)**: Tam ekran hero (polaroid + marka + tek CTA) + kompakt footer; scroll edilecek ekstra pazarlama içeriği yok
 - **Üretim (`/uretim`)**: 3 adımlı intro şeridi (Açıkla / Zenginleştir / İndir) → Generator (iki kolon: form | sonuç) + Sergi/Galeri erişim kartları
-- **Form kartı**: Açıklama; stil/oran kartları; Collapsible gelişmiş (varyasyon, watermark varsayılan ipucu "Visora", blog metni)
+- **Form kartı**: Açıklama; stil/oran kartları; Collapsible gelişmiş (varyasyon, watermark varsayılan ipucu "Visora", blog metni); Groq BYOK alanı yanında tarayıcı-saklama uyarısı
 - **Sonuç kartı**: Büyük önizleme (tıkla-indir); Badge enrichment; prompt özeti
 - **Cold start**: Skeleton + "Sunucu uyanıyor…"
 - **Motion**: Polaroid hover scale/shadow; sergi JS `rotateY`; `prefers-reduced-motion` ile yavaşlat / scale kapat
+- **Yasal**: `/gizlilik` (aydınlatma), `/kullanim-kosullari` (koşullar) — Fraunces H1/H2 + DM Sans gövde; max-w-3xl; header + footer shell
+
 ## Sergi (`/sergi`) — 3D
 
+- SEO: `robots: noindex, follow` — oturum state; bot/ilk ziyarette boş (thin içerik)
 - Saf CSS 3D carousel + JS drag-to-rotate; Three.js yok
 - Yalnızca oturumda üretilmiş görseller — placeholder/örnek dolgu yok; `n` = gerçek adet
 - Kart boyutu sabit (`--w: 17.5em`); spacing `carousel-geometry.ts` lookup (n=2..10 ampirik) + n>10 silindir formülü
@@ -99,6 +104,7 @@ Ana sayfa (`/`) **yalnızca tam ekran hero**dır (nav + hero = ~100dvh; scroll e
 
 ## Galeri (`/galeri`) — grid + indir
 
+- SEO: `robots: noindex, follow` — oturum state; bot/ilk ziyarette boş (thin içerik)
 - Kare thumbnail grid (telefon galerisi); 3D/animasyon yok
 - Tıkla → önizleme lightbox + **Kullanılan prompt** (scrollable mono kutu) + **İndir**
 - Aynı oturum store (Context + sessionStorage)

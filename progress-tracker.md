@@ -13,6 +13,7 @@ change.
 
 ## Completed
 
+- **SEO temel altyapı** — App Router Metadata API (title template `%s | Visora`, sayfa başına title/description/OG/Twitter/canonical via `NEXT_PUBLIC_SITE_URL`); `/`+`/uretim` index, `/sergi`+`/galeri` noindex+follow (oturum thin içerik); `robots.ts` + `sitemap.ts` (yalnızca indexlenebilir route'lar); marka OG/Twitter görseli (`opengraph-image.tsx`); ana sayfa JSON-LD (WebApplication+Organization+WebSite, fiyat 0, sahte rating yok); hero `sr-only` h1; `lang=tr`; GSC/Bing verification env placeholder; `.env.local.example` güncellendi
 - Spec/planlama ve CLI/stretch/teslim (önceki turlar)
 - Monorepo FastAPI + Next.js + Groq zinciri
 - **Visora rebrand** (context + UI + API title + CLI prog)
@@ -30,6 +31,7 @@ change.
 - **Blog section2 prompt fix** — `blog_ideas` H2 sırasıyla section_1/2; `concrete_scene_from_section` başlık+ilk cümleler; enrichment’ta aksiyon odaklı talimat + `focal_keywords` / template anchor; pytest (`tests/test_prompt_engine.py`, `test_blog_ideas.py`)
 - **Galeri modal prompt** — lightbox’ta görsel altında scrollable “Kullanılan prompt” (`font-mono` + `bg-muted`, Üretim paneliyle aynı pattern) + Kopyala
 - **Blog section prompt tutarlılığı** — ortak stil eki (`shared_style_suffix`: pastel mavi/bej/gri palet + ışık/stil iskeleti) her enrichment’a eklenir; zorunlu özne/eylem (`ensure_concrete_subject`, boş oda → insan figürü); H1 başlık/Sonuç atlanır, section_1/2 gerçek gövde H2’ye map; cover/section1 yapısı korunur; `image_generator`’a dokunulmadı (invariant #5)
+- **Gizlilik / Kullanım Koşulları** — `/gizlilik` (KVKK aydınlatma: veri sorumlusu, işleme amacı, saklama=oturum/yok, Groq+Pollinations, oturum galerisi); `/kullanim-kosullari` (ücretsiz hizmet, çıktı sorumluluğu, Wikimedia polaroid dekoratif, cold-start/garanti yok); `SiteFooter` (© + yasal linkler, home `compact`); Groq BYOK yanına tarayıcı-saklama uyarısı; sitemap’e eklendi
 
 ## In Progress
 
@@ -49,7 +51,8 @@ change.
 - Oturum galeri: React Context + sessionStorage
 - `/sergi` saf CSS 3D; Three.js yok
 - Tıkla-indir + hover ipucu (yalnızca `/galeri` + sonuç önizlemesi)
-- Route'lar: `/` tam ekran hero · `/uretim` generator · `/sergi` · `/galeri`
+- Route'lar: `/` tam ekran hero · `/uretim` generator · `/sergi` · `/galeri` · `/gizlilik` · `/kullanim-kosullari`
+- Shell footer: yasal linkler (nav’a eklenmez; footer’da)- SEO: `/sergi` ve `/galeri` noindex (oturum boş/thin); sitemap yalnızca `/` ve `/uretim`
 
 ## Session Notes
 

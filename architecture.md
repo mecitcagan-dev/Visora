@@ -25,6 +25,7 @@
 
 - `frontend/` — Next.js App Router (Visora); iş mantığı yok
 - Route'lar: `/` (tam ekran hero), `/uretim` (generator + adımlar + sonuç), `/sergi` (3D sergi), `/galeri` (grid + indir); eski `/gallery` → `/sergi` redirect
+- SEO: `/` ve `/uretim` indexlenebilir; `/sergi` ve `/galeri` `noindex, follow` (oturum state — botta boş/thin içerik)
 - `frontend` bileşenleri — shadcn + stil/oran kartları + GalleryProvider (oturum store)
 - `backend/api.py` — FastAPI app: `POST /api/generate`, CORS, rate limit, Pydantic şemalar; ince orchestration
 - `backend/src/` — Mevcut mantık katmanı (kök `src/` buraya **taşınacak**; içerik/sorumluluk aynı)
@@ -65,7 +66,8 @@
 
 ## Deploy Notes
 
-- **Vercel (frontend Hobby)**: `NEXT_PUBLIC_API_URL` → Render backend URL
+- **Vercel (frontend Hobby)**: `NEXT_PUBLIC_API_URL` → Render backend URL; `NEXT_PUBLIC_SITE_URL` → kanonik site origin (trailing slash yok, örn. `https://visora-studio.vercel.app`)
+- **Search Console / Bing**: doğrulama meta için `NEXT_PUBLIC_GSC_VERIFICATION` / `NEXT_PUBLIC_BING_VERIFICATION` (değerleri sen ekle; boş bırakılabilir)
 - **Render (backend free Web Service)**: 15 dk hareketsizlikten sonra uyku; ilk istek ~30–60 sn gecikebilir — kabul edilen trade-off; frontend cold-start UI gösterir
 - Fiili deploy bu turda yok; mimari env + CORS ile hazır
 

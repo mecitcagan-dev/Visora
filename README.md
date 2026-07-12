@@ -49,8 +49,9 @@ python -m src.cli "..." --style illustration --ratio landscape --watermark "Viso
 
 1. **Render** (`backend`): `uvicorn api:app --host 0.0.0.0 --port $PORT`  
    Env: `CORS_ORIGINS=https://<vercel>`, opsiyonel `GROQ_API_KEY`
-2. **Vercel** (`frontend`): `NEXT_PUBLIC_API_URL=https://<render>`
-3. Free Render cold start: ilk istek 30–60 sn; UI warm-up içerir
+2. **Vercel** (`frontend`): `NEXT_PUBLIC_API_URL=https://<render>`; `NEXT_PUBLIC_SITE_URL=https://<site>` (kanonik origin, trailing slash yok)
+3. Search Console / Bing: isteğe bağlı `NEXT_PUBLIC_GSC_VERIFICATION` / `NEXT_PUBLIC_BING_VERIFICATION` (meta doğrulama; değerleri sen ekle)
+4. Free Render cold start: ilk istek 30–60 sn; UI warm-up içerir
 
 ## Notlar
 
