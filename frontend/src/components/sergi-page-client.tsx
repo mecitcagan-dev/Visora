@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Layers } from "lucide-react";
 import { carouselGeometry } from "@/lib/carousel-geometry";
 import { useGallery } from "@/components/gallery-provider";
+import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -175,10 +176,10 @@ export function SergiPageClient() {
   }, [n, clearResumeTimer, pauseAutoAndResume, rotateBy]);
 
   return (
-    <div className="min-h-screen">
+    <div className="flex min-h-screen flex-col">
       <SiteHeader />
 
-      <main className="mx-auto flex min-h-[calc(100dvh-4.5rem)] max-w-6xl flex-col px-4 pb-16 pt-8 md:px-8">
+      <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col px-4 pb-16 pt-8 md:px-8">
         <h1 className="font-display text-3xl font-semibold tracking-tight md:text-4xl">
           Sergi
         </h1>
@@ -252,6 +253,7 @@ export function SergiPageClient() {
           </div>
         )}
       </main>
+      <SiteFooter />
     </div>
   );
 }

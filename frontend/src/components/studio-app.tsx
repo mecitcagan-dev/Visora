@@ -24,6 +24,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { ClickableImage } from "@/components/clickable-image";
 import { useGallery } from "@/components/gallery-provider";
+import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -161,10 +162,10 @@ export function StudioApp() {
   }
 
   return (
-    <div className="min-h-screen">
+    <div className="flex min-h-screen flex-col">
       <SiteHeader generating={loading} />
 
-      <main className="mx-auto max-w-6xl px-4 pb-16 pt-8 md:px-8">
+      <main className="mx-auto w-full max-w-6xl flex-1 px-4 pb-16 pt-8 md:px-8">
         <div className="mb-8">
           <h1 className="font-display text-3xl font-semibold tracking-tight md:text-4xl">
             Üretim
@@ -345,8 +346,11 @@ export function StudioApp() {
                       >
                         Groq
                       </a>{" "}
-                      anahtarınızı girin. Anahtar yalnızca bu tarayıcıda
-                      (localStorage) saklanır; sunucuda tutulmaz.
+                      anahtarınızı girin.
+                    </p>
+                    <p className="text-xs leading-relaxed text-muted-foreground">
+                      Anahtar yalnızca bu tarayıcıda saklanır; sunucuya kalıcı
+                      gönderilmez (yalnızca üretim isteğinde iletilir).
                     </p>
                   </div>
                   {groqHydrated && groqKey.trim() ? (
@@ -508,6 +512,7 @@ export function StudioApp() {
           </div>
         </div>
       </main>
+      <SiteFooter />
     </div>
   );
 }
