@@ -38,11 +38,12 @@ change.
 
 ## In Progress
 
-- None yet.
+- CWV turu lokal commit’ler hazır; Security push bitince `pull --rebase` + push (kullanıcı onayı)
 
 ## Next Up
 
 - Vercel env: `NEXT_PUBLIC_SITE_URL` production origin (SEO canonical/OG; ayrı iş)
+- CWV commit’lerini push (kullanıcı “şimdi push et” deyince)
 
 ### Security hardening (ADIM 1–4) — tamam
 
@@ -113,3 +114,20 @@ Notlar: `/uretim` TBT 220 ms; `/` TBT 0 ms. INP lab’de ölçülmedi (interacti
 
 - ui-context.md: “Skeleton + Sunucu uyanıyor…”
 - Gerçek UX (`studio-app.tsx`): `Loader2` spinner + 8 sn sonra “Sunucu uyanıyor olabilir…” + nav `GenerationProgressBar`. `Skeleton` bileşeni tanımlı ama **kullanılmıyor**.
+
+### CWV — Önce | Sonra
+
+Lab: `next build --turbopack` + `next start` (port 3055), Lighthouse mobile/`--preset=perf`, 2026-07-12.
+
+| Sayfa | Metrik | Önce | Sonra |
+|-------|--------|------|-------|
+| `/` | Performance | 99 | 99 |
+| `/` | LCP | 1.8 s | 1.7 s |
+| `/` | CLS | 0 | 0 |
+| `/` | INP | n/a | n/a |
+| `/uretim` | Performance | 95 | 99 |
+| `/uretim` | LCP | 1.8 s | 1.8 s |
+| `/uretim` | CLS | 0 | 0 |
+| `/uretim` | INP | n/a | n/a |
+
+Ek: `/uretim` TBT 220 ms → 50 ms; `/` TBT 0 ms → 60 ms (lab gürültüsü). INP lab’de ölçülmedi.
