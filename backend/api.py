@@ -49,6 +49,8 @@ class GenerateRequest(BaseModel):
     variations: int = Field(default=1, ge=1, le=5)
     watermark: str | None = None
     blog_text: str | None = None
+    # Optional BYOK — prefer X-Groq-Api-Key header; body accepted as fallback
+    groq_api_key: str | None = None
 
 
 class ImageResult(BaseModel):
@@ -72,21 +74,30 @@ def health() -> dict[str, str]:
 @limiter.limit(RATE_LIMIT)
 def generate(request: Request, body: GenerateRequest) -> GenerateResponse:
     try:
-        return _run_generate(body)
+        # BYOK: optional per-request key (never logged). Env key remains CLI fallback.
+        header_key = (request.headers.get("x-groq-api-key") or "").strip()
+        body_key = (body.groq_api_key or "").strip() if body.groq_api_key else ""
+        groq_key = header_key or body_key or None
+        return _run_generate(body, groq_api_key=groq_key)
     except ValidationError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
     except (PromptEnrichmentError, ImageGenerationError) as exc:
         raise HTTPException(status_code=502, detail=str(exc)) from exc
 
 
-def _run_generate(body: GenerateRequest) -> GenerateResponse:
+def _run_generate(
+    body: GenerateRequest,
+    groq_api_key: str | None = None,
+) -> GenerateResponse:
     jobs = _jobs(body)
     images: list[ImageResult] = []
     last_source: Literal["groq", "pollinations", "template"] = "template"
 
     for label_base, description in jobs:
         # One enrichment per subject; variations only differ by framing hints.
-        result = enrich_prompt_detailed(description, body.style)
+        result = enrich_prompt_detailed(
+            description, body.style, groq_api_key=groq_api_key
+        )
         last_source = result.source
         count = body.variations if body.blog_text is None else 1
 

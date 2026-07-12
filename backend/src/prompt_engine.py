@@ -109,8 +109,15 @@ def enrich_prompt(description: str, style: str) -> str:
     return enrich_prompt_detailed(description, style).prompt
 
 
-def enrich_prompt_detailed(description: str, style: str) -> EnrichmentResult:
-    """Groq → Pollinations text → template. Does not download images."""
+def enrich_prompt_detailed(
+    description: str,
+    style: str,
+    groq_api_key: str | None = None,
+) -> EnrichmentResult:
+    """Groq → Pollinations text → template. Does not download images.
+
+    Prefer an explicit per-request Groq key (BYOK); fall back to env for CLI.
+    """
     subject = description.strip()
     if not subject:
         raise ValidationError("Açıklama boş olamaz.")
@@ -118,7 +125,9 @@ def enrich_prompt_detailed(description: str, style: str) -> EnrichmentResult:
     style_key = style.strip().lower()
     template = STYLE_TEMPLATES.get(style_key, DEFAULT_TEMPLATE)
 
-    groq_key = os.environ.get("GROQ_API_KEY", "").strip()
+    groq_key = (groq_api_key or "").strip() or os.environ.get(
+        "GROQ_API_KEY", ""
+    ).strip()
     if groq_key:
         try:
             enriched = _enrich_via_groq(subject, style_key, template, groq_key)

@@ -2,15 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import {
-  Sparkles,
-  Loader2,
-  Images,
-  LayoutGrid,
-  ArrowRight,
-  ImageIcon,
-  Wand2,
-} from "lucide-react";
+import { KeyRound, Loader2, Sparkles, Images, LayoutGrid, ArrowRight, ImageIcon, Wand2 } from "lucide-react";
 import { toast } from "sonner";
 
 import { Badge } from "@/components/ui/badge";
@@ -43,6 +35,11 @@ import {
   STYLES,
   StyleId,
 } from "@/lib/visora";
+import {
+  clearGroqApiKey,
+  loadGroqApiKey,
+  saveGroqApiKey,
+} from "@/lib/groq-key";
 
 const STEPS = [
   {
@@ -74,12 +71,30 @@ export function StudioApp() {
   const [status, setStatus] = useState("");
   const [result, setResult] = useState<GenerateResponse | null>(null);
   const [advancedOpen, setAdvancedOpen] = useState(false);
+  const [groqKey, setGroqKey] = useState("");
+  const [groqHydrated, setGroqHydrated] = useState(false);
+
+  useEffect(() => {
+    setGroqKey(loadGroqApiKey());
+    setGroqHydrated(true);
+  }, []);
 
   useEffect(() => {
     const controller = new AbortController();
     fetch(`${apiBase()}/health`, { signal: controller.signal }).catch(() => {});
     return () => controller.abort();
   }, []);
+
+  function onGroqKeyChange(value: string) {
+    setGroqKey(value);
+    saveGroqApiKey(value);
+  }
+
+  function onClearGroqKey() {
+    setGroqKey("");
+    clearGroqApiKey();
+    toast.message("Groq API anahtarı silindi");
+  }
 
   async function onGenerate() {
     const hasBlog = blogText.trim().length > 0;
@@ -95,9 +110,17 @@ export function StudioApp() {
     }, 8000);
 
     try {
+      const headers: Record<string, string> = {
+        "Content-Type": "application/json",
+      };
+      const key = groqKey.trim() || loadGroqApiKey();
+      if (key) {
+        headers["X-Groq-Api-Key"] = key;
+      }
+
       const res = await fetch(`${apiBase()}/api/generate`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers,
         body: JSON.stringify({
           description: hasBlog ? null : description.trim(),
           style,
@@ -290,6 +313,57 @@ export function StudioApp() {
                   </div>
                 </CollapsibleContent>
               </Collapsible>
+
+              <div className="space-y-2 rounded-xl border border-border bg-muted/40 p-4">
+                <div className="flex items-start gap-2">
+                  <KeyRound className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+                  <div className="min-w-0 flex-1 space-y-1">
+                    <Label htmlFor="groq-key" className="text-foreground">
+                      Groq API key (isteğe bağlı)
+                    </Label>
+                    <p className="text-xs leading-relaxed text-muted-foreground">
+                      Daha iyi sonuç istiyorsanız kendi{" "}
+                      <a
+                        href="https://console.groq.com/keys"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-primary underline-offset-2 hover:underline"
+                      >
+                        Groq
+                      </a>{" "}
+                      anahtarınızı girin. Anahtar yalnızca bu tarayıcıda
+                      (localStorage) saklanır; sunucuda tutulmaz.
+                    </p>
+                  </div>
+                  {groqHydrated && groqKey.trim() ? (
+                    <Badge variant="soft" className="shrink-0">
+                      Groq hazır
+                    </Badge>
+                  ) : null}
+                </div>
+                <div className="flex gap-2">
+                  <Input
+                    id="groq-key"
+                    type="password"
+                    autoComplete="off"
+                    spellCheck={false}
+                    placeholder="gsk_…"
+                    value={groqKey}
+                    onChange={(e) => onGroqKeyChange(e.target.value)}
+                    className="rounded-xl font-mono text-sm"
+                  />
+                  {groqKey.trim() ? (
+                    <Button
+                      type="button"
+                      variant="outline"
+                      className="shrink-0 rounded-xl"
+                      onClick={onClearGroqKey}
+                    >
+                      Sil
+                    </Button>
+                  ) : null}
+                </div>
+              </div>
 
               <Button
                 className="w-full rounded-xl"

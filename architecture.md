@@ -15,7 +15,7 @@
 | Image post-process | Pillow                                             | Watermark (bellekte / geçici buffer)                          |
 | Web storage        | Yok (kalıcı)                                       | Görsel response'ta döner; indirme tarayıcıda                  |
 | CLI storage        | Yerel `output/`                                    | Yalnızca CLI; web akışını etkilemez                           |
-| Secrets            | Backend env (`GROQ_API_KEY` on Render)             | Frontend'e asla gönderilmez                                   |
+| Secrets            | BYOK: kullanıcı Groq key (localStorage → `X-Groq-Api-Key`); opsiyonel backend env CLI için | Render'a zorunlu `GROQ_API_KEY` yok |
 | CORS               | FastAPI CORSMiddleware                             | Vercel / localhost origin                                     |
 | Rate limiting      | slowapi (veya eşdeğeri), IP bazlı                  | Ücretsiz kota koruması (sonraki implementasyon)               |
 | Deploy             | Frontend → Vercel Hobby; Backend → Render free     | Fiili deploy sonra; cold start trade-off kabul                |
@@ -52,7 +52,7 @@
 - **Kalıcı web depolama yok**: DB yok; R2/S3 yok; Render diskinde kalıcı galeri yok. Görsel üretilir → response → frontend indirme.
 - **Frontend galeri**: Oturum store (React Context; isteğe `sessionStorage` — `localStorage` yok). `/` ↔ `/gallery` navigasyonunda korunur; sekme kapanınca / bilinçli temizlikte gider. Kalıcı sunucu galeri yok.
 - **CLI**: Yerel `backend/output/images/` + `prompts/` — web'den bağımsız.
-- **Secrets**: `GROQ_API_KEY` yalnızca backend ortam değişkeni (Render / yerel `.env`); frontend bundle'a girmez.
+- **Secrets / BYOK**: Üretim sayfasında isteğe bağlı Groq API key; tarayıcı `localStorage`'da saklanır, istekte `X-Groq-Api-Key` ile backend'e iletilir (loglanmaz). Render'da paylaşılan `GROQ_API_KEY` zorunlu değil. CLI için opsiyonel env key kalır.
 - **Geçici bellek**: Üretim sırasında bytes backend belleğinde; istek bitince tutulmaz.
 
 ## Auth and Access Model
@@ -78,7 +78,7 @@
 5. `prompt_engine` görsel indirmez; `image_generator` prompt üretmez
 6. CLI çıktıları yalnızca `output/` altına yazılır; web yolu kalıcı dosya yazmaz
 7. FastAPI (`api.py`) ve Next.js UI iş mantığını içermez; mantık `backend/src/`'de kalır
-8. API anahtarları koda/repoya yazılmaz; `GROQ_API_KEY` yalnızca backend env — frontend'e sızmaz
+8. API anahtarları repoya yazılmaz. Üretimde Groq **BYOK**: kullanıcı kendi key'ini tarayıcıda tutar ve istek başına gönderir; sunucu key'i saklamaz. CLI için opsiyonel `GROQ_API_KEY` env kalır.
 9. CLI ve `backend/src` public sözleşmeleri bozulmadan kalır
 10. Prompt zinciri: Groq (key varsa) → Pollinations text → template
 11. `backend/src` katman ayrımı bozulmaz; FastAPI yalnızca sarar
